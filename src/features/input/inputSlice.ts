@@ -38,6 +38,9 @@ export const inputSlice = createAppSlice({
                     const new_message = { username: username, message: message }
                     messages.messages.push(new_message)
                     localStorage.setItem('chatMessages',JSON.stringify(messages))
+                }else{
+                    const messages = {messages:[{ username: username, message: message}]}
+                    localStorage.setItem('chatMessages',JSON.stringify(messages))
                 }
             }
         )
