@@ -8,7 +8,7 @@ export interface UserSliceState {
 const initialState:UserSliceState ={
     name:null
 } 
-export const counterSlice = createAppSlice({
+export const userSlice = createAppSlice({
     name: "user",
     initialState,
     reducers: create =>({
@@ -18,3 +18,5 @@ export const counterSlice = createAppSlice({
         selectUserName: user=>user.name
     }
 })
+export const {} = userSlice.actions
+export const {selectUserName} = userSlice.selectors
