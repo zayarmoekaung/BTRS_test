@@ -2,7 +2,7 @@ import type { PayloadAction } from "@reduxjs/toolkit"
 import { createAppSlice } from "../../app/createAppSlice"
 
 export interface inputSliceState{
-    message: string|null
+    message: string
 }
 
 const initialState:inputSliceState = {
@@ -20,4 +20,4 @@ export const inputSlice = createAppSlice({
 })
 
 export const {} = inputSlice.actions
-export const {} = inputSlice.selectors
+export const {selectMessage} = inputSlice.selectors
