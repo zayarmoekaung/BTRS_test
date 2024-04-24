@@ -2,14 +2,16 @@ import { useState } from "react"
 import styles from './send.module.css'
 import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { setMessage,selectMessage, sendMessage } from "./inputSlice"
+import { selectUserName } from "../user/userSlice"
 export const Input = ()=>{
+    const username = useAppSelector(selectUserName)
     const dispatch = useAppDispatch()
     const message = useAppSelector(selectMessage)
     const handleChange = (text:string) =>{
         dispatch(setMessage(text))
     }
     const handleSend = () =>{
-        dispatch(sendMessage())
+        dispatch(sendMessage(username))
     }
     return(
         <>

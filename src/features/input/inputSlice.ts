@@ -28,10 +28,10 @@ export const inputSlice = createAppSlice({
             },
         ),
         sendMessage: create.reducer(
-            (state)=>{
-                const rdStore = store.getState()
+            (state,action: PayloadAction<string|null>)=>{
+                
                 const message = state.message
-                const username = rdStore.user.name
+                const username = action.payload
                 const raw_messages = localStorage.getItem('chatMessages') 
                 if (raw_messages) {
                     const messages = JSON.parse(raw_messages) as messages
@@ -42,6 +42,7 @@ export const inputSlice = createAppSlice({
                     const messages = {messages:[{ username: username, message: message}]}
                     localStorage.setItem('chatMessages',JSON.stringify(messages))
                 }
+                state.message = ""
             }
         )
 
