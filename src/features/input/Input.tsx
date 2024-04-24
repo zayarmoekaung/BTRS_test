@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { setMessage,selectMessage, sendMessage } from "./inputSlice"
 import { selectUserName } from "../user/userSlice"
 export const Input = ()=>{
+    const channel = new BroadcastChannel('messageChannel')
     const username = useAppSelector(selectUserName)
     const dispatch = useAppDispatch()
     const message = useAppSelector(selectMessage)
@@ -12,6 +13,7 @@ export const Input = ()=>{
     }
     const handleSend = () =>{
         dispatch(sendMessage(username))
+        channel.postMessage("message")
     }
     return(
         <>
