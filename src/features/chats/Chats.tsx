@@ -33,7 +33,10 @@ export const Chats = () =>{
       const message = messages[index]
       history.unshift(
         <div className={`chat ${message.username==username?'out':'in'}`}>
-          <span>{message.message}</span>
+          <span>
+            <i>{message.username}</i>
+            <p>{message.message}</p>
+            </span>
         </div>
       )
       c-=1
@@ -48,6 +51,7 @@ export const Chats = () =>{
     return(
         <>
         <div className="chats" onScroll={handleScroll}>
+          <div className="chats_inner">
           {messages?
           <>
           {chat_history()}
@@ -61,6 +65,7 @@ export const Chats = () =>{
             
           </div>
           }
+          </div>
         </div>
         </>
     )
