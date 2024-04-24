@@ -10,7 +10,14 @@ export const Chats = () =>{
   const [count,setCount] = useState(25)
     useEffect(()=>{
       dispatch(fetchMessage())
-    },[])
+    },[dispatch])
+    const handleScroll = (e:any) => {
+      const target = e.target as HTMLElement; 
+      const top = target.scrollTop === 0;
+      if (top) {
+       setCount(count+25)
+      }
+    }
   const chat_history = ()=>{
     let index = messages.length-1
     let c     = count
@@ -34,7 +41,7 @@ export const Chats = () =>{
   }
     return(
         <>
-        <div className="chats">
+        <div className="chats" onScroll={handleScroll}>
           {messages?
           <>
           {chat_history()}
