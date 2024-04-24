@@ -9,14 +9,13 @@ export interface inputSliceState{
 const initialState:inputSliceState = {
     message: ""
 }
-interface messages {
-    messages:[
-        {
-            username: string|null
-            message: string
+interface message  {
+    username: string|null
+    message: string
 
-        }
-    ]
+}
+interface messages {
+    messages:message[]
 }
 export const inputSlice = createAppSlice({
     name:"input",

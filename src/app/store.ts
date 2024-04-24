@@ -3,7 +3,8 @@ import { combineSlices, configureStore } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query"
 import { userSlice } from "../features/user/userSlice"
 import { inputSlice } from "../features/input/inputSlice"
-const rootReducer = combineSlices(userSlice,inputSlice)
+import { chatsSlice } from "../features/chats/chatsSlice"
+const rootReducer = combineSlices(userSlice,inputSlice,chatsSlice)
 export type RootState = ReturnType<typeof rootReducer>
 
 // The store setup is wrapped in `makeStore` to allow reuse
