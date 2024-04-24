@@ -27,7 +27,6 @@ export const chatsSlice = createAppSlice({
                     state.messages = messages.messages
                     
                 }
-                console.log(state.messages,"fetch")
             }
         ),
        
