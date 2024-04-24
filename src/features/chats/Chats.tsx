@@ -4,6 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../app/hooks"
 import { fetchMessage,selectMessages } from "./chatsSlice"
 import { selectUserName } from "../user/userSlice"
 export const Chats = () =>{
+  const channel = new BroadcastChannel('messageChannel')
   const dispatch = useAppDispatch()
   const messages = useAppSelector(selectMessages)
   const username = useAppSelector(selectUserName)
@@ -18,6 +19,11 @@ export const Chats = () =>{
        setCount(count+25)
       }
     }
+    useEffect(()=>{
+      channel.onmessage =()=>{
+        dispatch(fetchMessage())
+      }
+    },[channel])
   const chat_history = ()=>{
     let index = messages.length-1
     let c     = count
