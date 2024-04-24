@@ -1,72 +1,63 @@
-import { useEffect, useState } from "react"
-import styles from './chats.module.css'
-import { useAppDispatch, useAppSelector } from "../../app/hooks"
-import { fetchMessage,selectMessages } from "./chatsSlice"
-import { selectUserName } from "../user/userSlice"
-export const Chats = () =>{
-  const channel = new BroadcastChannel('messageChannel')
-  const dispatch = useAppDispatch()
-  const messages = useAppSelector(selectMessages)
-  const username = useAppSelector(selectUserName)
-  const [count,setCount] = useState(25)
-    useEffect(()=>{
-      dispatch(fetchMessage())
-    },[dispatch])
-    const handleScroll = (e:any) => {
-      const target = e.target as HTMLElement; 
-      const top = target.scrollTop === 0;
-      if (top) {
-       setCount(count+25)
-      }
+import { useEffect, useState, useRef } from 'react';
+import styles from './chats.module.css';
+import { useAppDispatch, useAppSelector } from '../../app/hooks';
+import { fetchMessages, selectMessages } from './chatsSlice';
+import { selectUserName } from '../user/userSlice';
+
+export const Chats = () => {
+  const dispatch = useAppDispatch();
+  const messages = useAppSelector(selectMessages);
+  const username = useAppSelector(selectUserName);
+  const [count, setCount] = useState(25);
+  const chatContainerRef = useRef(null);
+
+  useEffect(() => {
+    dispatch(fetchMessages());
+  }, [dispatch]);
+
+  useEffect(() => {
+    const channel = new BroadcastChannel('messageChannel');
+    channel.onmessage = () => {
+      dispatch(fetchMessages());
+    };
+    return () => channel.close();
+  }, []);
+
+  const handleScroll = (e:any) => {
+    const target = e.target;
+    if (target.scrollTop === 0) {
+      setCount((prevCount) => prevCount + 25);
     }
-    useEffect(()=>{
-      channel.onmessage =()=>{
-        dispatch(fetchMessage())
-      }
-    },[channel])
-  const chat_history = ()=>{
-    let index = messages.length-1
-    let c     = count
-    const history = []
-    
-    while(index>0&&c>0){
-      const message = messages[index]
-      history.unshift(
-        <div className={`chat ${message.username==username?'out':'in'}`}>
+  };
+
+  const chatHistory = () => {
+    return messages
+      .slice(-count) 
+      .map((message, index) => (
+        <div
+          key={index}
+          className={`${styles.chat} ${message.username === username ? styles.out : styles.in}`}
+        >
           <span>
             <i>{message.username}</i>
             <p>{message.message}</p>
-            </span>
+          </span>
         </div>
-      )
-      c-=1
-      index-=1
-    }
-    return (
-      <>
-        {history}
-      </>
-    )
-  }
-    return(
-        <>
-        <div className="chats" onScroll={handleScroll}>
-          <div className="chats_inner">
-          {messages?
-          <>
-          {chat_history()}
-          </>
-          :
-            <div className="empty">
-            <div className="empty-icon">
-              
-            </div>
-            <p className="empty-title h5">You have no new messages</p>
-            
+      ));
+  };
+
+  return (
+    <div className={styles.chats} onScroll={handleScroll} ref={chatContainerRef}>
+      <div className={styles.chatsInner}>
+        {messages && messages.length > 0 ? (
+          chatHistory()
+        ) : (
+          <div className={styles.empty}>
+            <div className={styles.emptyIcon}></div>
+            <p className={styles.emptyTitle}>You have no new messages</p>
           </div>
-          }
-          </div>
-        </div>
-        </>
-    )
-}
+        )}
+      </div>
+    </div>
+  );
+};

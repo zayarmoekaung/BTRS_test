@@ -19,7 +19,7 @@ export const chatsSlice = createAppSlice({
     name:"chats",
     initialState,
     reducers:create =>({
-        fetchMessage:create.reducer(
+        fetchMessages:create.reducer(
             (state)=>{
                 const raw_messages = localStorage.getItem('chatMessages')
                 if (raw_messages) {
@@ -36,5 +36,5 @@ export const chatsSlice = createAppSlice({
         selectMessages:chats=>chats.messages
     }
 }) 
-export const { fetchMessage } = chatsSlice.actions
+export const { fetchMessages } = chatsSlice.actions
 export const { selectMessages } = chatsSlice.selectors
